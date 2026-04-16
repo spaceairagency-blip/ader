@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AD-KEY | Private Ad Network</title>
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.1);
+            --border: rgba(255, 255, 255, 0.2);
+            --text: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            padding: 40px;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+            text-align: center;
+        }
+
+        h1 { margin-bottom: 20px; font-weight: 300; letter-spacing: 2px; }
+
+        .input-group { margin-bottom: 15px; text-align: left; }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: white;
+            box-sizing: border-box;
+            margin-top: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #00d2ff;
+            background: linear-gradient(to right, #3a7bd5, #00d2ff);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover { transform: translateY(-2px); opacity: 0.9; }
+
+        .code-box {
+            background: #000;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: left;
+            font-family: monospace;
+            font-size: 12px;
+            margin-top: 20px;
+            display: none;
+            word-break: break-all;
+            border: 1px solid #333;
+        }
+
+        .label { font-size: 12px; color: #aaa; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>AD-KEY PLATFORM</h1>
+    <p>Create your unique ad key and start earning.</p>
+
+    <div class="input-group">
+        <span class="label">Your GAS Web App URL</span>
+        <input type="text" id="gasUrl" placeholder="https://script.google.com/macros/s/.../exec">
+    </div>
+
+    <div class="input-group">
+        <span class="label">Ad Key (From your Sheet)</span>
+        <input type="text" id="adKey" placeholder="e.g. USER_101">
+    </div>
+
+    <button onclick="generateCode()">GENERATE INTEGRATION CODE</button>
+
+    <div id="output" class="code-box">
+        <span style="color: #00d2ff;">// Copy this code to any HTML website:</span><br><br>
+        <span id="finalCode"></span>
+    </div>
+</div>
+
+<script>
+    function generateCode() {
+        const url = document.getElementById('gasUrl').value;
+        const key = document.getElementById('adKey').value;
+
+        if(!url || !key) {
+            alert("Please enter your GAS URL and a Key!");
+            return;
+        }
+
+        const snippet = `
+&lt;div id="ad-container-01" style="max-width:100%; text-align:center;"&gt;&lt;/div&gt;
+&lt;script&gt;
+  fetch("${url}?key=${key}")
+    .then(r => r.json())
+    .then(d => {
+      if(d.success) {
+        document.getElementById('ad-container-01').innerHTML = 
+          \`&lt;a href="\${d.link}" target="_blank"&gt;
+             &lt;img src="\${d.image}" style="width:100%; border-radius:10px; transition:0.3s;" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1"&gt;
+           &lt;/a&gt;\`;
+      }
+    });
+&lt;\/script&gt;`;
+
+        document.getElementById('finalCode').innerHTML = snippet;
+        document.getElementById('output').style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
