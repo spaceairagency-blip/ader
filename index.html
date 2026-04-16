@@ -7,6 +7,8 @@
 </head>
 <body>
     Hi Guys How are you now look ad the advatizement
+    
+<div id="ad-container-01" style="max-width:100%; text-align:center;"></div> <script> fetch("https://script.google.com/macros/s/AKfycbzLfxxmfmBqra_LCB17f6coPeI4e32W1qZGzDrXnu7-ZLnQ7jCgRbS5DvpYsbMGXnmb/exec?key=USER101?key=USER101") .then(r => r.json()) .then(d => { if(d.success) { document.getElementById('ad-container-01').innerHTML = `<a href="${d.link}" target="_blank"> <img src="${d.image}" style="width:100%; border-radius:10px; transition:0.3s;" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1"> </a>`; } }); </script>
   
 </body>
 </html>
