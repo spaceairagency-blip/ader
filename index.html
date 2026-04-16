@@ -3,12 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>My Ad Platform</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Glassmorphism Container */
+        .ad-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 25px;
+            width: 350px;
+            text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        h2 {
+            font-weight: 300;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            color: #00d2ff;
+        }
+
+        #ad-display {
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        img {
+            max-width: 100%;
+            border-radius: 12px;
+            display: none; /* Hidden until loaded */
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        img:hover {
+            transform: scale(1.02);
+        }
+
+        .loading-text {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .error-text {
+            color: #ff4b2b;
+            font-size: 0.8rem;
+        }
+    </style>
 </head>
 <body>
-    Hi Guys How are you now look ad the advatizement hello sfddf
-    <div id="ad-container-01" style="max-width:100%; text-align:center;"></div> <script> fetch("https://script.google.com/macros/s/AKfycbzLfxxmfmBqra_LCB17f6coPeI4e32W1qZGzDrXnu7-ZLnQ7jCgRbS5DvpYsbMGXnmb/exec?key=USER101?key=USER101") .then(r => r.json()) .then(d => { if(d.success) { document.getElementById('ad-container-01').innerHTML = `<a href="${d.link}" target="_blank"> <img src="${d.image}" style="width:100%; border-radius:10px; transition:0.3s;" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1"> </a>`; } }); </script>
-<!-- <div id="ad-container-01" style="max-width:100%; text-align:center;"></div> <script> fetch("https://script.google.com/macros/s/AKfycbzLfxxmfmBqra_LCB17f6coPeI4e32W1qZGzDrXnu7-ZLnQ7jCgRbS5DvpYsbMGXnmb/exec?key=USER101?key=USER101") .then(r => r.json()) .then(d => { if(d.success) { document.getElementById('ad-container-01').innerHTML = `<a href="${d.link}" target="_blank"> <img src="${d.image}" style="width:100%; border-radius:10px; transition:0.3s;" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1"> </a>`; } }); </script> -->
-  <!-- <div id="ad-container-01" style="max-width:100%; text-align:center;"></div> <script> fetch("https://script.google.com/macros/s/AKfycbzLfxxmfmBqra_LCB17f6coPeI4e32W1qZGzDrXnu7-ZLnQ7jCgRbS5DvpYsbMGXnmb/exec?key=USER101") .then(r => r.json()) .then(d => { if(d.success) { document.getElementById('ad-container-01').innerHTML = `<a href="${d.link}" target="_blank"> <img src="${d.image}" style="width:100%; border-radius:10px; transition:0.3s;" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1"> </a>`; } }); </script> -->
+
+    <div class="ad-card">
+        <h2>SPONSORED AD</h2>
+        <div id="ad-display">
+            <p id="status" class="loading-text">Fetching Advertisement...</p>
+            <a id="ad-link" href="#" target="_blank">
+                <img id="ad-img" src="" alt="Ad Content">
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyrzbi8ALhkjgp7MUH6QjYB6W_DiqNN4acBaYOea66rsbLKL9Q62hJa1JzbbaVF-yFD/exec";
+        const AD_KEY = "USER101";
+
+        async function loadAdvertisement() {
+            const statusEl = document.getElementById('status');
+            const imgEl = document.getElementById('ad-img');
+            const linkEl = document.getElementById('ad-link');
+
+            try {
+                const response = await fetch(`${SCRIPT_URL}?key=${AD_KEY}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    statusEl.style.display = 'none';
+                    imgEl.src = data.image; // Your data:image link
+                    imgEl.style.display = 'block';
+                    linkEl.href = data.link; // Your samiyyan.vercel.app link
+                } else {
+                    statusEl.innerText = "No active ad found for this key.";
+                    statusEl.className = "error-text";
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                statusEl.innerText = "Connection failed. Check GAS deployment.";
+                statusEl.className = "error-text";
+            }
+        }
+
+        // Run on load
+        loadAdvertisement();
+    </script>
 </body>
 </html>
